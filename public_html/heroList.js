@@ -22,7 +22,7 @@ export async function generateHeroList(element, setSelectedHeroId) {
     
     const refreshButton = document.createElement('button')
     refreshButton.append('Refresh')
-    refreshButton.onclick = () => generateHeroList(element)
+    refreshButton.onclick = () => generateHeroList(element, setSelectedHeroId)
 
     element.replaceChildren(table, refreshButton)
 }
