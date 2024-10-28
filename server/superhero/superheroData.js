@@ -1,9 +1,13 @@
 import { ObjectId } from "mongodb"
 import { collection } from "../db.js"
 
-export async function findAllSuperheroes() {
+export async function findAllSuperheroes(nameFragment) {
+    const mongoQuery = {}
+    if (nameFragment !== undefined) {
+        mongoQuery.name = nameFragment
+    }
     const heroCollection = await collection('heroes')
-    const cursor = await heroCollection.find() // no query finds everything!
+    const cursor = await heroCollection.find(mongoQuery) // no query finds everything!
     const heroes = await cursor.toArray()
     return heroes
 }
@@ -18,4 +22,5 @@ export async function createHero(data) {
     const heroCollection  = await collection('heroes')
     const insertResult = await heroCollection.insertOne(data)
     console.log('Inserted hero ', insertResult.insertedId)
+    return await heroCollection.findOne({ _id: insertResult.insertedId })
 }
